@@ -3,27 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>All Hands Q&A</title>
+<title>TaxDome All Hands Q&A</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #F7F5F0;
+    --bg: #F4F6FB;
     --surface: #FFFFFF;
-    --border: #E8E4DC;
-    --text: #1A1814;
-    --muted: #8A8680;
-    --accent: #1A1814;
-    --accent-light: #F0EDE6;
-    --green: #2D6A4F;
-    --green-light: #E8F5EE;
-    --pin: #B5451B;
-    --pin-light: #FDF0EB;
-    --answered: #6B7280;
+    --border: #E4EAF5;
+    --text: #0F1C3F;
+    --muted: #7A8BAD;
+    --accent: #1A3ACC;
+    --accent-light: #D9E6FF;
+    --accent-mid: #8EB8FF;
     --radius: 12px;
-    --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+    --shadow: 0 1px 3px rgba(40,81,245,0.06), 0 4px 16px rgba(40,81,245,0.04);
   }
 
   body {
@@ -35,11 +31,10 @@
     line-height: 1.6;
   }
 
-  /* Header */
   header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
-    padding: 20px 24px;
+    padding: 14px 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -48,15 +43,26 @@
     z-index: 10;
   }
 
-  .header-left h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    font-weight: 400;
-    letter-spacing: -0.3px;
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
   }
 
-  .header-left p {
-    font-size: 13px;
+  .header-divider {
+    width: 1px;
+    height: 22px;
+    background: var(--border);
+  }
+
+  .header-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .header-subtitle {
+    font-size: 12px;
     color: var(--muted);
     margin-top: 1px;
   }
@@ -67,8 +73,8 @@
     gap: 6px;
     font-size: 12px;
     font-weight: 500;
-    color: var(--green);
-    background: var(--green-light);
+    color: var(--accent);
+    background: var(--accent-light);
     padding: 5px 10px;
     border-radius: 20px;
   }
@@ -76,7 +82,7 @@
   .live-dot {
     width: 6px;
     height: 6px;
-    background: var(--green);
+    background: var(--accent);
     border-radius: 50%;
     animation: pulse 2s ease-in-out infinite;
   }
@@ -86,14 +92,12 @@
     50% { opacity: 0.4; }
   }
 
-  /* Layout */
   main {
     max-width: 680px;
     margin: 0 auto;
     padding: 28px 20px 60px;
   }
 
-  /* Submit form */
   .submit-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -149,11 +153,12 @@
     gap: 10px;
   }
 
-  .format-option:hover { border-color: #C8C4BC; }
+  .format-option:hover { border-color: var(--accent-mid); }
 
   .format-option.selected {
     border-color: var(--accent);
     background: var(--surface);
+    box-shadow: 0 0 0 3px rgba(26,58,204,0.07);
   }
 
   .format-option input[type="radio"] { display: none; }
@@ -170,17 +175,13 @@
     margin-top: 1px;
   }
 
-  .format-icon.anon { background: #EEE; color: var(--muted); }
   .format-icon.open { background: var(--accent-light); color: var(--accent); }
+  .format-icon.anon { background: #EEF0F5; color: var(--muted); }
 
   .format-label strong { display: block; font-size: 13px; font-weight: 500; }
   .format-label span { font-size: 12px; color: var(--muted); }
 
-  .name-field {
-    margin-top: 12px;
-    display: none;
-  }
-
+  .name-field { margin-top: 12px; display: none; }
   .name-field.visible { display: block; }
 
   .name-field input {
@@ -193,6 +194,7 @@
     background: var(--bg);
     outline: none;
     transition: border-color 0.15s;
+    color: var(--text);
   }
 
   .name-field input:focus { border-color: var(--accent); background: var(--surface); }
@@ -201,14 +203,17 @@
   .notice {
     margin-top: 12px;
     font-size: 12px;
-    color: var(--muted);
+    color: #3A5AAE;
     display: flex;
-    gap: 6px;
+    gap: 8px;
     align-items: flex-start;
-    line-height: 1.4;
+    line-height: 1.5;
+    background: var(--accent-light);
+    border-radius: 8px;
+    padding: 10px 12px;
   }
 
-  .notice::before { content: 'ⓘ'; font-size: 13px; flex-shrink: 0; }
+  .notice-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
 
   .submit-btn {
     width: 100%;
@@ -222,32 +227,29 @@
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
-    transition: opacity 0.15s, transform 0.1s;
+    transition: opacity 0.15s, transform 0.1s, box-shadow 0.15s;
+    box-shadow: 0 2px 8px rgba(26,58,204,0.28);
+    letter-spacing: 0.1px;
   }
 
-  .submit-btn:hover { opacity: 0.88; }
+  .submit-btn:hover { opacity: 0.92; box-shadow: 0 4px 14px rgba(26,58,204,0.35); }
   .submit-btn:active { transform: scale(0.99); }
-  .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
 
-  /* Success state */
-  .success-msg {
-    display: none;
-    text-align: center;
-    padding: 20px 0 4px;
-  }
-
+  .success-msg { display: none; text-align: center; padding: 20px 0 4px; }
   .success-msg.visible { display: block; }
 
   .success-icon {
     width: 40px;
     height: 40px;
-    background: var(--green-light);
+    background: var(--accent-light);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 10px;
     font-size: 18px;
+    color: var(--accent);
   }
 
   .success-msg p { font-size: 14px; color: var(--muted); }
@@ -268,7 +270,6 @@
 
   .ask-another:hover { background: var(--bg); }
 
-  /* Questions list */
   .questions-header {
     display: flex;
     align-items: center;
@@ -276,29 +277,20 @@
     margin-bottom: 16px;
   }
 
-  .questions-header h2 {
-    font-size: 15px;
-    font-weight: 500;
-  }
+  .questions-header h2 { font-size: 15px; font-weight: 500; }
 
   .q-count {
     font-size: 13px;
-    color: var(--muted);
-    background: var(--surface);
-    border: 1px solid var(--border);
+    color: var(--accent);
+    background: var(--accent-light);
     border-radius: 20px;
     padding: 3px 10px;
+    font-weight: 500;
   }
 
-  .empty-state {
-    text-align: center;
-    padding: 48px 24px;
-    color: var(--muted);
-  }
-
+  .empty-state { text-align: center; padding: 48px 24px; color: var(--muted); }
   .empty-state p { font-size: 14px; }
 
-  /* Question card */
   .question-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -306,7 +298,6 @@
     padding: 18px 20px;
     margin-bottom: 10px;
     box-shadow: var(--shadow);
-    transition: box-shadow 0.15s;
     animation: fadeIn 0.3s ease;
   }
 
@@ -315,51 +306,20 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .question-card.pinned {
-    border-color: var(--pin);
-    border-left: 3px solid var(--pin);
-  }
-
+  .question-card.pinned { border-left: 3px solid var(--accent); }
   .question-card.answered { opacity: 0.65; }
 
-  .card-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 10px;
-  }
-
+  .card-top { margin-bottom: 8px; }
   .badges { display: flex; gap: 6px; flex-wrap: wrap; }
 
-  .badge {
-    font-size: 11px;
-    font-weight: 500;
-    padding: 3px 8px;
-    border-radius: 20px;
-    letter-spacing: 0.2px;
-  }
+  .badge { font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 20px; }
+  .badge-pin { background: var(--accent-light); color: var(--accent); }
+  .badge-answered { background: #F3F4F6; color: #6B7280; }
 
-  .badge-pin { background: var(--pin-light); color: var(--pin); }
-  .badge-answered { background: #F3F4F6; color: var(--answered); }
+  .question-text { font-size: 15px; line-height: 1.55; color: var(--text); margin-bottom: 12px; }
 
-  .question-text {
-    font-size: 15px;
-    line-height: 1.55;
-    color: var(--text);
-    margin-bottom: 12px;
-  }
-
-  .card-bottom {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .author {
-    font-size: 12px;
-    color: var(--muted);
-  }
+  .card-bottom { display: flex; align-items: center; justify-content: space-between; }
+  .author { font-size: 12px; color: var(--muted); }
 
   .upvote-btn {
     display: flex;
@@ -377,35 +337,19 @@
     transition: all 0.15s;
   }
 
-  .upvote-btn:hover { border-color: #C8C4BC; background: var(--surface); }
-
-  .upvote-btn.voted {
-    background: var(--accent-light);
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
+  .upvote-btn:hover { border-color: var(--accent-mid); }
+  .upvote-btn.voted { background: var(--accent-light); border-color: var(--accent); color: var(--accent); }
   .upvote-btn svg { width: 13px; height: 13px; }
 
-  /* Loading skeleton */
-  .skeleton {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 20px;
-    margin-bottom: 10px;
-  }
-
+  .skeleton { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 10px; }
   .skel-line {
     height: 13px;
-    background: linear-gradient(90deg, var(--border) 25%, #f0ece4 50%, var(--border) 75%);
+    background: linear-gradient(90deg, var(--border) 25%, #eef2fc 50%, var(--border) 75%);
     background-size: 200% 100%;
     border-radius: 6px;
     animation: shimmer 1.4s ease infinite;
     margin-bottom: 8px;
   }
-
-  .skel-line:last-child { width: 60%; margin-bottom: 0; }
 
   @keyframes shimmer {
     0% { background-position: 200% 0; }
@@ -417,8 +361,12 @@
 
 <header>
   <div class="header-left">
-    <h1>All Hands Q&amp;A</h1>
-    <p id="meeting-name">Loading session...</p>
+    <img src="logo.png" height="28" alt="TaxDome" style="display:block;">
+    <div class="header-divider"></div>
+    <div>
+      <div class="header-title">All Hands Q&amp;A</div>
+      <div class="header-subtitle" id="meeting-name">Loading...</div>
+    </div>
   </div>
   <div class="live-badge">
     <div class="live-dot"></div>
@@ -428,36 +376,38 @@
 
 <main>
 
-  <!-- Submit form -->
-  <div class="submit-card" id="submit-card">
+  <div class="submit-card">
     <h2>Ask a question</h2>
 
     <textarea id="question-input" placeholder="What's on your mind?" maxlength="500"></textarea>
 
     <div class="format-row">
-      <label class="format-option selected" id="opt-anon">
-        <input type="radio" name="format" value="anon" checked onchange="onFormatChange()">
-        <div class="format-icon anon">👤</div>
-        <div class="format-label">
-          <strong>Anonymous</strong>
-          <span>Name won't be shared</span>
-        </div>
-      </label>
-      <label class="format-option" id="opt-open">
-        <input type="radio" name="format" value="open" onchange="onFormatChange()">
+      <label class="format-option selected" id="opt-open">
+        <input type="radio" name="format" value="open" checked onchange="onFormatChange()">
         <div class="format-icon open">✦</div>
         <div class="format-label">
           <strong>With my name</strong>
           <span>Name may be shown</span>
         </div>
       </label>
+      <label class="format-option" id="opt-anon">
+        <input type="radio" name="format" value="anon" onchange="onFormatChange()">
+        <div class="format-icon anon">👤</div>
+        <div class="format-label">
+          <strong>Anonymous</strong>
+          <span>Name won't be shared</span>
+        </div>
+      </label>
     </div>
 
-    <div class="name-field" id="name-field">
+    <div class="name-field visible" id="name-field">
       <input type="text" id="name-input" placeholder="Your name" maxlength="60">
     </div>
 
-    <p class="notice">The admin decides whether your name is shown publicly, regardless of your choice here.</p>
+    <div class="notice">
+      <span class="notice-icon">💙</span>
+      <span>We support a culture of openness at TaxDome and encourage everyone to use the opportunity to ask questions openly and non-anonymously.</span>
+    </div>
 
     <button class="submit-btn" id="submit-btn" onclick="submitQuestion()">Send question</button>
 
@@ -469,9 +419,8 @@
     </div>
   </div>
 
-  <!-- Questions list -->
   <div class="questions-header">
-    <h2>Approved questions</h2>
+    <h2>Questions</h2>
     <span class="q-count" id="q-count">—</span>
   </div>
 
@@ -483,20 +432,18 @@
 </main>
 
 <script>
-  const API = 'https://script.google.com/a/macros/taxdome.com/s/AKfycbxpuJI31QwdHhrf39vgAnRcm8PwBdOhPGmMS4r25MKOxL99FjJ2-4Nh-BC5_QFqI-O3/exec'; // ← замени на свой URL
+  const API = 'https://script.google.com/a/macros/taxdome.com/s/AKfycbxpuJI31QwdHhrf39vgAnRcm8PwBdOhPGmMS4r25MKOxL99FjJ2-4Nh-BC5_QFqI-O3/exec';
   const POLL_INTERVAL = 10000;
   const voted = new Set(JSON.parse(localStorage.getItem('voted') || '[]'));
-  let questions = [];
 
-  // Format toggle
   function onFormatChange() {
     const val = document.querySelector('input[name="format"]:checked').value;
-    document.getElementById('opt-anon').classList.toggle('selected', val === 'anon');
     document.getElementById('opt-open').classList.toggle('selected', val === 'open');
+    document.getElementById('opt-anon').classList.toggle('selected', val === 'anon');
     document.getElementById('name-field').classList.toggle('visible', val === 'open');
   }
 
-async function submitQuestion() {
+  async function submitQuestion() {
     const text = document.getElementById('question-input').value.trim();
     if (!text) return;
 
@@ -531,22 +478,20 @@ async function submitQuestion() {
     }, 1500);
   }
 
-  // Reset form
   function resetForm() {
     document.getElementById('question-input').style.display = '';
     document.getElementById('question-input').value = '';
     document.querySelector('.format-row').style.display = '';
-    document.getElementById('name-field').style.display = '';
+    document.getElementById('name-field').classList.add('visible');
     document.querySelector('.notice').style.display = '';
     document.getElementById('submit-btn').style.display = '';
     document.getElementById('submit-btn').disabled = false;
     document.getElementById('submit-btn').textContent = 'Send question';
     document.getElementById('success-msg').classList.remove('visible');
-    document.querySelector('input[value="anon"]').checked = true;
+    document.querySelector('input[value="open"]').checked = true;
     onFormatChange();
   }
 
-  // Upvote
   async function upvote(id, rowIndex) {
     if (voted.has(id)) return;
     voted.add(id);
@@ -559,21 +504,15 @@ async function submitQuestion() {
       count.textContent = parseInt(count.textContent) + 1;
     }
 
-    try {
-      await fetch(API, {
-        method: 'POST',
-        body: JSON.stringify({ action: 'upvote', rowIndex })
-      });
-    } catch(e) {}
+    new Image().src = API + '?action=upvote&rowIndex=' + rowIndex;
   }
 
-  // Render questions
   function render(qs) {
     const list = document.getElementById('questions-list');
     document.getElementById('q-count').textContent = qs.length + ' question' + (qs.length !== 1 ? 's' : '');
 
     if (qs.length === 0) {
-      list.innerHTML = '<div class="empty-state"><p>No approved questions yet.<br>Be the first to ask!</p></div>';
+      list.innerHTML = '<div class="empty-state"><p>No questions yet.<br>Be the first to ask!</p></div>';
       return;
     }
 
@@ -602,33 +541,27 @@ async function submitQuestion() {
   }
 
   function escHtml(str) {
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  // Fetch questions
   async function fetchQuestions() {
     try {
       const res = await fetch(API + '?action=getApproved');
       const data = await res.json();
-      questions = data;
       render(data);
     } catch(e) {}
   }
 
-  // Fetch meeting name from Settings
   async function fetchSettings() {
     try {
       const res = await fetch(API + '?action=getSettings');
       const data = await res.json();
-      if (data.meetingName) {
-        document.getElementById('meeting-name').textContent = data.meetingName;
-      }
+      if (data.meetingName) document.getElementById('meeting-name').textContent = data.meetingName;
     } catch(e) {
       document.getElementById('meeting-name').textContent = 'Q&A Session';
     }
   }
 
-  // Init
   fetchSettings();
   fetchQuestions();
   setInterval(fetchQuestions, POLL_INTERVAL);
