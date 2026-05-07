@@ -483,7 +483,7 @@
 </main>
 
 <script>
-  const API = 'https://script.google.com/a/macros/taxdome.com/s/AKfycbzE3AZZTJQJ2Tx9yWnZ98RUzl1c4Q6Ecjtr2Zd4_ZPPwoEXrlVNfcE4KRUZuBHRTE_d/exec'; // ← замени на свой URL
+  const API = 'https://script.google.com/a/macros/taxdome.com/s/AKfycbxpuJI31QwdHhrf39vgAnRcm8PwBdOhPGmMS4r25MKOxL99FjJ2-4Nh-BC5_QFqI-O3/exec'; // ← замени на свой URL
   const POLL_INTERVAL = 10000;
   const voted = new Set(JSON.parse(localStorage.getItem('voted') || '[]'));
   let questions = [];
@@ -496,8 +496,7 @@
     document.getElementById('name-field').classList.toggle('visible', val === 'open');
   }
 
-  // Submit question
-  async function submitQuestion() {
+async function submitQuestion() {
     const text = document.getElementById('question-input').value.trim();
     if (!text) return;
 
@@ -514,17 +513,15 @@
     btn.textContent = 'Sending...';
 
     try {
-      await fetch(API, {
-        method: 'POST',
-        body: JSON.stringify({
-          action: 'submitQuestion',
-          text,
-          submittedAs: format,
-          name: format === 'open' ? name : ''
-        })
+      const params = new URLSearchParams({
+        action: 'submitQuestion',
+        text: text,
+        submittedAs: format,
+        name: format === 'open' ? name : ''
       });
 
-      // Show success
+      await fetch(API + '?' + params.toString(), { method: 'GET' });
+
       document.getElementById('question-input').style.display = 'none';
       document.querySelector('.format-row').style.display = 'none';
       document.getElementById('name-field').style.display = 'none';
