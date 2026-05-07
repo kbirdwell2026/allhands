@@ -512,27 +512,23 @@ async function submitQuestion() {
     btn.disabled = true;
     btn.textContent = 'Sending...';
 
-    try {
-      const params = new URLSearchParams({
-        action: 'submitQuestion',
-        text: text,
-        submittedAs: format,
-        name: format === 'open' ? name : ''
-      });
+    const params = new URLSearchParams({
+      action: 'submitQuestion',
+      text: text,
+      submittedAs: format,
+      name: format === 'open' ? name : ''
+    });
 
-      await fetch(API + '?' + params.toString(), { method: 'GET' });
+    new Image().src = API + '?' + params.toString();
 
+    setTimeout(() => {
       document.getElementById('question-input').style.display = 'none';
       document.querySelector('.format-row').style.display = 'none';
       document.getElementById('name-field').style.display = 'none';
       document.querySelector('.notice').style.display = 'none';
       btn.style.display = 'none';
       document.getElementById('success-msg').classList.add('visible');
-    } catch(e) {
-      btn.disabled = false;
-      btn.textContent = 'Send question';
-      alert('Error: ' + e.toString());
-    }
+    }, 1500);
   }
 
   // Reset form
