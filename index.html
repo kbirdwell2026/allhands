@@ -544,21 +544,30 @@
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
+    function jsonp(url) {
+    return new Promise((resolve, reject) => {
+      const cb = 'cb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+      window[cb] = function(data) { delete window[cb]; resolve(data); };
+      const s = document.createElement('script');
+      s.src = url + '&callback=' + cb;
+      s.onerror = () => { delete window[cb]; reject(new Error('JSONP failed')); };
+      document.head.appendChild(s);
+    });
+  }
+
   async function fetchQuestions() {
     try {
-      const res = await fetch(API + '?action=getApproved');
-      const data = await res.json();
+      const data = await jsonp(API + '?action=getApproved');
       render(data);
     } catch(e) {}
   }
 
   async function fetchSettings() {
     try {
-      const res = await fetch(API + '?action=getSettings');
-      const data = await res.json();
+      const data = await jsonp(API + '?action=getSettings');
       if (data.meetingName) document.getElementById('meeting-name').textContent = data.meetingName;
     } catch(e) {
-      document.getElementById('meeting-name').textContent = 'Q&A Session';
+      document.getElementById('meeting-name').textContent = 'Q&A Session';;
     }
   }
 
