@@ -37,7 +37,6 @@
     line-height: 1.6;
   }
 
-  /* Access denied screen */
   .access-denied {
     display: flex;
     align-items: center;
@@ -50,7 +49,6 @@
   .access-denied h1 { font-size: 20px; font-weight: 500; margin-bottom: 8px; }
   .access-denied p { font-size: 14px; color: var(--muted); }
 
-  /* Header */
   header {
     background: var(--surface);
     border-bottom: 1px solid var(--border);
@@ -77,7 +75,6 @@
     border-radius: 20px;
   }
 
-  /* Layout */
   .layout {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -87,11 +84,8 @@
     padding: 24px 20px 60px;
   }
 
-  @media (max-width: 768px) {
-    .layout { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 768px) { .layout { grid-template-columns: 1fr; } }
 
-  /* Panels */
   .panel {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -142,22 +136,23 @@
 
   .refresh-btn:hover { border-color: var(--accent-mid); color: var(--accent); }
 
-  .panel-body { padding: 12px; max-height: calc(100vh - 200px); overflow-y: auto; }
+  .panel-body {
+    padding: 12px;
+    max-height: calc(100vh - 180px);
+    overflow-y: auto;
+  }
 
   .empty { text-align: center; padding: 32px 16px; color: var(--muted); font-size: 14px; }
 
-  /* Question cards in admin */
   .q-card {
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 14px 16px;
     margin-bottom: 10px;
     background: var(--bg);
-    transition: box-shadow 0.15s;
   }
 
   .q-card:last-child { margin-bottom: 0; }
-
   .q-card.pinned { border-left: 3px solid var(--accent); }
   .q-card.answered { opacity: 0.6; }
 
@@ -181,8 +176,6 @@
   .tag-pin { background: var(--accent-light); color: var(--accent); }
   .tag-answered { background: var(--green-light); color: var(--green); }
 
-  .q-name { font-size: 12px; color: var(--muted); }
-
   .q-text {
     font-size: 14px;
     line-height: 1.5;
@@ -190,64 +183,6 @@
     margin-bottom: 12px;
   }
 
-  /* Action buttons */
-  .q-actions { display: flex; gap: 6px; flex-wrap: wrap; }
-
-  .btn {
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 500;
-    padding: 5px 12px;
-    border-radius: 6px;
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-
-  .btn-approve {
-    background: var(--green-light);
-    color: var(--green);
-    border-color: #BBF7D0;
-  }
-  .btn-approve:hover { background: #BBF7D0; }
-
-  .btn-reject {
-    background: var(--red-light);
-    color: var(--red);
-    border-color: #FECACA;
-  }
-  .btn-reject:hover { background: #FECACA; }
-
-  .btn-pin {
-    background: var(--accent-light);
-    color: var(--accent);
-    border-color: var(--accent-mid);
-  }
-  .btn-pin:hover { background: var(--accent-mid); color: #fff; }
-
-  .btn-answered {
-    background: var(--green-light);
-    color: var(--green);
-    border-color: #BBF7D0;
-  }
-  .btn-answered:hover { background: #BBF7D0; }
-
-  .btn-unanswered {
-    background: #F1F5F9;
-    color: var(--muted);
-    border-color: var(--border);
-  }
-  .btn-unanswered:hover { background: var(--border); }
-
-  .btn-delete {
-    background: none;
-    color: var(--muted);
-    border-color: var(--border);
-  }
-  .btn-delete:hover { background: var(--red-light); color: var(--red); border-color: #FECACA; }
-
-  /* Publish as toggle */
   .publish-row {
     display: flex;
     align-items: center;
@@ -284,10 +219,38 @@
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   }
 
-  /* Loading */
-  .loading { text-align: center; padding: 24px; color: var(--muted); font-size: 13px; }
+  .q-actions { display: flex; gap: 6px; flex-wrap: wrap; }
 
-  /* Toast */
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-approve { background: var(--green-light); color: var(--green); border-color: #BBF7D0; }
+  .btn-approve:hover { background: #BBF7D0; }
+
+  .btn-reject { background: var(--red-light); color: var(--red); border-color: #FECACA; }
+  .btn-reject:hover { background: #FECACA; }
+
+  .btn-pin { background: var(--accent-light); color: var(--accent); border-color: var(--accent-mid); }
+  .btn-pin:hover { background: var(--accent-mid); color: #fff; }
+
+  .btn-answered { background: var(--green-light); color: var(--green); border-color: #BBF7D0; }
+  .btn-answered:hover { background: #BBF7D0; }
+
+  .btn-neutral { background: #F1F5F9; color: var(--muted); border-color: var(--border); }
+  .btn-neutral:hover { background: var(--border); }
+
+  .btn-delete { background: none; color: var(--muted); border-color: var(--border); }
+  .btn-delete:hover { background: var(--red-light); color: var(--red); border-color: #FECACA; }
+
   .toast {
     position: fixed;
     bottom: 24px;
@@ -309,15 +272,13 @@
 </head>
 <body>
 
-<!-- Access denied fallback -->
 <div class="access-denied" id="access-denied" style="display:none;">
   <div>
     <h1>🔒 Access denied</h1>
-    <p>This page requires an admin key.<br>Open it as <code>admin.html?key=YOURKEY</code></p>
+    <p>This page requires an admin key.</p>
   </div>
 </div>
 
-<!-- Main UI -->
 <div id="main-ui" style="display:none;">
 
   <header>
@@ -334,7 +295,6 @@
 
   <div class="layout">
 
-    <!-- LEFT: Pending -->
     <div class="panel">
       <div class="panel-header">
         <div class="panel-title">
@@ -344,11 +304,10 @@
         <button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
       </div>
       <div class="panel-body" id="pending-list">
-        <div class="loading">Loading...</div>
+        <div class="empty">Loading...</div>
       </div>
     </div>
 
-    <!-- RIGHT: Approved -->
     <div class="panel">
       <div class="panel-header">
         <div class="panel-title">
@@ -358,7 +317,7 @@
         <button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
       </div>
       <div class="panel-body" id="approved-list">
-        <div class="loading">Loading...</div>
+        <div class="empty">Loading...</div>
       </div>
     </div>
 
@@ -369,40 +328,47 @@
 <div class="toast" id="toast"></div>
 
 <script>
-  const API = 'https://script.google.com/a/macros/taxdome.com/s/AKfycbySJccIHvrQy26F6BD3BK6PADmfoMylCVEN9xuvXml0KbEq-bqJJbrhclTk2aF2tOUw/exec';
-  const params = new URLSearchParams(window.location.search);
-  const KEY = params.get('key');
+  const API = 'https://script.google.com/a/macros/taxdome.com/s/AKfycbwqaq5WZjQUKQIwE5wL2DT2iU6g2QEwYw47ojt-se1PgUtiK2lcT9euCxp-z5D--e_x/exec';
+  const KEY = 'ALLHANDS2026';
 
   // Check access
-  if (KEY !== 'ALLHANDS2026') {
+  if (!KEY) {
     document.getElementById('access-denied').style.display = 'flex';
   } else {
     document.getElementById('main-ui').style.display = 'block';
-    init();
-  }
-
-  function init() {
     loadAll();
     setInterval(loadAll, 15000);
   }
 
+  function jsonp(url) {
+    return new Promise((resolve, reject) => {
+      const cb = 'cb_' + Date.now() + '_' + Math.random().toString(36).slice(2);
+      window[cb] = function(data) {
+        delete window[cb];
+        resolve(data);
+      };
+      const s = document.createElement('script');
+      s.src = url + '&callback=' + cb;
+      s.onerror = () => { delete window[cb]; reject(new Error('JSONP failed')); };
+      document.head.appendChild(s);
+      setTimeout(() => { delete window[cb]; reject(new Error('Timeout')); }, 10000);
+    });
+  }
+
   async function loadAll() {
-    await Promise.all([loadPending(), loadApproved()]);
-    loadSettings();
+    await Promise.all([loadPending(), loadApproved(), loadSettings()]);
   }
 
   async function loadSettings() {
     try {
-      const res = await fetch(API + '?action=getSettings');
-      const data = await res.json();
+      const data = await jsonp(`${API}?action=getSettings`);
       if (data.meetingName) document.getElementById('meeting-name').textContent = data.meetingName;
     } catch(e) {}
   }
 
   async function loadPending() {
     try {
-      const res = await fetch(`${API}?action=getPending&key=${KEY}`);
-      const data = await res.json();
+      const data = await jsonp(`${API}?action=getPending&key=${KEY}`);
       const list = document.getElementById('pending-list');
       document.getElementById('pending-count').textContent = data.length;
 
@@ -415,7 +381,7 @@
         <div class="q-card" id="pcard-${q.rowIndex}">
           <div class="q-meta">
             <span class="q-tag ${q.submittedAs === 'anon' ? 'tag-anon' : 'tag-open'}">
-              ${q.submittedAs === 'anon' ? '👤 Anonymous' : '✦ ' + escHtml(q.name || 'Open')}
+              ${q.submittedAs === 'anon' ? '👤 Anonymous' : '✦ ' + escHtml(q.name || '')}
             </span>
           </div>
           <div class="q-text">${escHtml(q.text)}</div>
@@ -423,17 +389,15 @@
             Publish as:
             <div class="toggle-group">
               <button class="toggle-btn ${q.submittedAs === 'anon' ? 'active' : ''}"
-                id="pub-anon-${q.rowIndex}"
-                onclick="setPublishAs(${q.rowIndex}, 'anon', 'pending')">Anonymous</button>
-              <button class="toggle-btn ${q.submittedAs === 'open' ? 'active' : ''}"
-                id="pub-open-${q.rowIndex}"
-                onclick="setPublishAs(${q.rowIndex}, 'open', 'pending')">With name</button>
+                onclick="setPublishAs(${q.rowIndex}, 'anon', this)">Anonymous</button>
+              <button class="toggle-btn ${q.submittedAs !== 'anon' ? 'active' : ''}"
+                onclick="setPublishAs(${q.rowIndex}, 'open', this)">With name</button>
             </div>
           </div>
           <div class="q-actions">
             <button class="btn btn-approve" onclick="moderate(${q.rowIndex}, 'Approved', 'pcard-${q.rowIndex}')">✓ Approve</button>
             <button class="btn btn-reject" onclick="moderate(${q.rowIndex}, 'Rejected', 'pcard-${q.rowIndex}')">✕ Reject</button>
-            <button class="btn btn-delete" onclick="moderate(${q.rowIndex}, 'Deleted', 'pcard-${q.rowIndex}')">🗑</button>
+            <button class="btn btn-delete" onclick="moderate(${q.rowIndex}, 'Deleted', 'pcard-${q.rowIndex}')">🗑 Delete</button>
           </div>
         </div>
       `).join('');
@@ -444,8 +408,7 @@
 
   async function loadApproved() {
     try {
-      const res = await fetch(`${API}?action=getAllApproved&key=${KEY}`);
-      const data = await res.json();
+      const data = await jsonp(`${API}?action=getAllApproved&key=${KEY}`);
       const list = document.getElementById('approved-list');
       document.getElementById('approved-count').textContent = data.length;
 
@@ -469,23 +432,21 @@
             Publish as:
             <div class="toggle-group">
               <button class="toggle-btn ${q.publishedAs === 'anon' ? 'active' : ''}"
-                id="pub-anon-${q.rowIndex}"
-                onclick="setPublishAs(${q.rowIndex}, 'anon', 'approved')">Anonymous</button>
+                onclick="setPublishAs(${q.rowIndex}, 'anon', this)">Anonymous</button>
               <button class="toggle-btn ${q.publishedAs !== 'anon' ? 'active' : ''}"
-                id="pub-open-${q.rowIndex}"
-                onclick="setPublishAs(${q.rowIndex}, 'open', 'approved')">With name</button>
+                onclick="setPublishAs(${q.rowIndex}, 'open', this)">With name</button>
             </div>
           </div>
           <div class="q-actions">
-            <button class="btn ${q.pinned ? 'btn-unanswered' : 'btn-pin'}"
+            <button class="btn ${q.pinned ? 'btn-neutral' : 'btn-pin'}"
               onclick="togglePin(${q.rowIndex}, ${q.pinned})">
               ${q.pinned ? '📌 Unpin' : '📌 Pin'}
             </button>
-            <button class="btn ${q.answered ? 'btn-unanswered' : 'btn-answered'}"
+            <button class="btn ${q.answered ? 'btn-neutral' : 'btn-answered'}"
               onclick="toggleAnswered(${q.rowIndex}, ${q.answered})">
               ${q.answered ? '↩ Unanswer' : '✓ Answered'}
             </button>
-            <button class="btn btn-delete" onclick="moderate(${q.rowIndex}, 'Deleted', 'acard-${q.rowIndex}')">🗑</button>
+            <button class="btn btn-delete" onclick="moderate(${q.rowIndex}, 'Deleted', 'acard-${q.rowIndex}')">🗑 Delete</button>
           </div>
         </div>
       `).join('');
@@ -494,52 +455,36 @@
     }
   }
 
-  // Publish as toggle (sets publishedAs without changing status)
-  function setPublishAs(rowIndex, publishedAs, section) {
-    // Update UI immediately
-    const anonBtn = document.getElementById(`pub-anon-${rowIndex}`);
-    const openBtn = document.getElementById(`pub-open-${rowIndex}`);
-    if (anonBtn) anonBtn.classList.toggle('active', publishedAs === 'anon');
-    if (openBtn) openBtn.classList.toggle('active', publishedAs === 'open');
-
-    new Image().src = `${API}?action=moderateQuestion&key=${KEY}&rowIndex=${rowIndex}&publishedAs=${publishedAs}`;
+  function setPublishAs(rowIndex, publishedAs, btn) {
+    const group = btn.closest('.toggle-group');
+    group.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    jsonp(`${API}?action=moderateQuestion&key=${KEY}&rowIndex=${rowIndex}&publishedAs=${publishedAs}`);
     toast('Visibility updated');
   }
 
-  // Approve / Reject / Delete
   async function moderate(rowIndex, status, cardId) {
     const card = document.getElementById(cardId);
     if (card) card.style.opacity = '0.4';
-
-    new Image().src = `${API}?action=moderateQuestion&key=${KEY}&rowIndex=${rowIndex}&status=${status}`;
-
-    setTimeout(() => {
-      if (card) card.remove();
-      loadAll();
-    }, 800);
-
+    await jsonp(`${API}?action=moderateQuestion&key=${KEY}&rowIndex=${rowIndex}&status=${status}`);
+    setTimeout(loadAll, 600);
     const labels = { Approved: '✓ Approved', Rejected: 'Rejected', Deleted: 'Deleted' };
     toast(labels[status] || status);
   }
 
-  // Pin toggle
-  function togglePin(rowIndex, currentlyPinned) {
+  async function togglePin(rowIndex, currentlyPinned) {
     const newVal = !currentlyPinned;
-    new Image().src = `${API}?action=moderateQuestion&key=${KEY}&rowIndex=${rowIndex}&pinned=${newVal}`;
+    await jsonp(`${API}?action=moderateQuestion&key=${KEY}&rowIndex=${rowIndex}&pinned=${newVal}`);
     toast(newVal ? '📌 Pinned' : 'Unpinned');
-    setTimeout(loadApproved, 800);
+    setTimeout(loadApproved, 600);
   }
 
-  // Answered toggle
-  function toggleAnswered(rowIndex, currentlyAnswered) {
+  async function toggleAnswered(rowIndex, currentlyAnswered) {
     const newVal = !currentlyAnswered;
-    new Image().src = `${API}?action=moderateQuestion&key=${KEY}&rowIndex=${rowIndex}&answered=${newVal}`;
+    await jsonp(`${API}?action=moderateQuestion&key=${KEY}&rowIndex=${rowIndex}&answered=${newVal}`);
     toast(newVal ? '✓ Marked as answered' : 'Marked as unanswered');
-    setTimeout(loadApproved, 800);
+    setTimeout(loadApproved, 600);
   }
-
-  // Also need to handle moderation via GET in Apps Script
-  // Add moderateQuestion to doGet in Apps Script
 
   function escHtml(str) {
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
