@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TaxDome Admin Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #F4F6FB;
+    --surface: #FFFFFF;
+    --border: #E4EAF5;
+    --text: #0F1C3F;
+    --muted: #7A8BAD;
+    --accent: #1A3ACC;
+    --accent-light: #D9E6FF;
+    --accent-mid: #8EB8FF;
+    --green: #166534;
+    --green-light: #DCFCE7;
+    --red: #991B1B;
+    --red-light: #FEE2E2;
+    --orange: #92400E;
+    --orange-light: #FEF3C7;
+    --radius: 12px;
+    --shadow: 0 1px 3px rgba(40,81,245,0.06), 0 4px 16px rgba(40,81,245,0.04);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* Access denied screen */
+  .access-denied {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    text-align: center;
+    padding: 24px;
+  }
+
+  .access-denied h1 { font-size: 20px; font-weight: 500; margin-bottom: 8px; }
+  .access-denied p { font-size: 14px; color: var(--muted); }
+
+  /* Header */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .header-divider { width: 1px; height: 22px; background: var(--border); }
+  .header-title { font-size: 15px; font-weight: 500; }
+  .header-subtitle { font-size: 12px; color: var(--muted); margin-top: 1px; }
+
+  .admin-badge {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--orange);
+    background: var(--orange-light);
+    padding: 5px 10px;
+    border-radius: 20px;
+  }
+
+  /* Layout */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 20px 60px;
+  }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+
+  /* Panels */
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .panel-title {
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .count-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 20px;
+    min-width: 20px;
+    text-align: center;
+  }
+
+  .count-pending { background: var(--orange-light); color: var(--orange); }
+  .count-approved { background: var(--green-light); color: var(--green); }
+
+  .refresh-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.15s;
+  }
+
+  .refresh-btn:hover { border-color: var(--accent-mid); color: var(--accent); }
+
+  .panel-body { padding: 12px; max-height: calc(100vh - 200px); overflow-y: auto; }
+
+  .empty { text-align: center; padding: 32px 16px; color: var(--muted); font-size: 14px; }
+
+  /* Question cards in admin */
+  .q-card {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    background: var(--bg);
+    transition: box-shadow 0.15s;
+  }
+
+  .q-card:last-child { margin-bottom: 0; }
+
+  .q-card.pinned { border-left: 3px solid var(--accent); }
+  .q-card.answered { opacity: 0.6; }
+
+  .q-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+
+  .q-tag {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+
+  .tag-anon { background: #F1F5F9; color: var(--muted); }
+  .tag-open { background: var(--accent-light); color: var(--accent); }
+  .tag-pin { background: var(--accent-light); color: var(--accent); }
+  .tag-answered { background: var(--green-light); color: var(--green); }
+
+  .q-name { font-size: 12px; color: var(--muted); }
+
+  .q-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  /* Action buttons */
+  .q-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+
+  .btn-approve {
+    background: var(--green-light);
+    color: var(--green);
+    border-color: #BBF7D0;
+  }
+  .btn-approve:hover { background: #BBF7D0; }
+
+  .btn-reject {
+    background: var(--red-light);
+    color: var(--red);
+    border-color: #FECACA;
+  }
+  .btn-reject:hover { background: #FECACA; }
+
+  .btn-pin {
+    background: var(--accent-light);
+    color: var(--accent);
+    border-color: var(--accent-mid);
+  }
+  .btn-pin:hover { background: var(--accent-mid); color: #fff; }
+
+  .btn-answered {
+    background: var(--green-light);
+    color: var(--green);
+    border-color: #BBF7D0;
+  }
+  .btn-answered:hover { background: #BBF7D0; }
+
+  .btn-unanswered {
+    background: #F1F5F9;
+    color: var(--muted);
+    border-color: var(--border);
+  }
+  .btn-unanswered:hover { background: var(--border); }
+
+  .btn-delete {
+    background: none;
+    color: var(--muted);
+    border-color: var(--border);
+  }
+  .btn-delete:hover { background: var(--red-light); color: var(--red); border-color: #FECACA; }
+
+  /* Publish as toggle */
+  .publish-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .toggle-group {
+    display: flex;
+    background: #F1F5F9;
+    border-radius: 6px;
+    padding: 2px;
+    gap: 2px;
+  }
+
+  .toggle-btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    background: none;
+    color: var(--muted);
+    transition: all 0.15s;
+  }
+
+  .toggle-btn.active {
+    background: var(--surface);
+    color: var(--accent);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  /* Loading */
+  .loading { text-align: center; padding: 24px; color: var(--muted); font-size: 13px; }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--text);
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.2s;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  .toast.show { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- Access denied fallback -->
+<div class="access-denied" id="access-denied" style="display:none;">
+  <div>
+    <h1>🔒 Access denied</h1>
+    <p>This page requires an admin key.<br>Open it as <code>admin.html?key=YOURKEY</code></p>
+  </div>
+</div>
+
+<!-- Main UI -->
+<div id="main-ui" style="display:none;">
+
+  <header>
+    <div class="header-left">
+      <img src="logo.png" height="28" alt="TaxDome" style="display:block;">
+      <div class="header-divider"></div>
+      <div>
+        <div class="header-title">Admin Panel</div>
+        <div class="header-subtitle" id="meeting-name">Loading...</div>
+      </div>
+    </div>
+    <div class="admin-badge">⚙ Moderator</div>
+  </header>
+
+  <div class="layout">
+
+    <!-- LEFT: Pending -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          Pending
+          <span class="count-badge count-pending" id="pending-count">0</span>
+        </div>
+        <button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
+      </div>
+      <div class="panel-body" id="pending-list">
+        <div class="loading">Loading...</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Approved -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          Approved
+          <span class="count-badge count-approved" id="approved-count">0</span>
+        </div>
+        <button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
+      </div>
+      <div class="panel-body" id="approved-list">
+        <div class="loading">Loading...</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  const API = 'https://script.google.com/a/macros/taxdome.com/s/AKfycbySJccIHvrQy26F6BD3BK6PADmfoMylCVEN9xuvXml0KbEq-bqJJbrhclTk2aF2tOUw/exec';
+  const params = new URLSearchParams(window.location.search);
+  const KEY = params.get('key');
+
+  // Check access
+  if (KEY !== 'ALLHANDS2026') {
+    document.getElementById('access-denied').style.display = 'flex';
+  } else {
+    document.getElementById('main-ui').style.display = 'block';
+    init();
+  }
+
+  function init() {
+    loadAll();
+    setInterval(loadAll, 15000);
+  }
+
+  async function loadAll() {
+    await Promise.all([loadPending(), loadApproved()]);
+    loadSettings();
+  }
+
+  async function loadSettings() {
+    try {
+      const res = await fetch(API + '?action=getSettings');
+      const data = await res.json();
+      if (data.meetingName) document.getElementById('meeting-name').textContent = data.meetingName;
+    } catch(e) {}
+  }
+
+  async function loadPending() {
+    try {
+      const res = await fetch(`${API}?action=getPending&key=${KEY}`);
+      const data = await res.json();
+      const list = document.getElementById('pending-list');
+      document.getElementById('pending-count').textContent = data.length;
+
+      if (data.length === 0) {
+        list.innerHTML = '<div class="empty">No pending questions 🎉</div>';
+        return;
+      }
+
+      list.innerHTML = data.map(q => `
+        <div class="q-card" id="pcard-${q.rowIndex}">
+          <div class="q-meta">
+            <span class="q-tag ${q.submittedAs === 'anon' ? 'tag-anon' : 'tag-open'}">
+              ${q.submittedAs === 'anon' ? '👤 Anonymous' : '✦ ' + escHtml(q.name || 'Open')}
+            </span>
+          </div>
+          <div class="q-text">${escHtml(q.text)}</div>
+          <div class="publish-row">
+            Publish as:
+            <div class="toggle-group">
+              <button class="toggle-btn ${q.submittedAs === 'anon' ? 'active' : ''}"
+                id="pub-anon-${q.rowIndex}"
+                onclick="setPublishAs(${q.rowIndex}, 'anon', 'pending')">Anonymous</button>
+              <button class="toggle-btn ${q.submittedAs === 'open' ? 'active' : ''}"
+                id="pub-open-${q.rowIndex}"
+                onclick="setPublishAs(${q.rowIndex}, 'open', 'pending')">With name</button>
+            </div>
+          </div>
+          <div class="q-actions">
+            <button class="btn btn-approve" onclick="moderate(${q.rowIndex}, 'Approved', 'pcard-${q.rowIndex}')">✓ Approve</button>
+            <button class="btn btn-reject" onclick="moderate(${q.rowIndex}, 'Rejected', 'pcard-${q.rowIndex}')">✕ Reject</button>
+            <button class="btn btn-delete" onclick="moderate(${q.rowIndex}, 'Deleted', 'pcard-${q.rowIndex}')">🗑</button>
+          </div>
+        </div>
+      `).join('');
+    } catch(e) {
+      document.getElementById('pending-list').innerHTML = '<div class="empty">Failed to load</div>';
+    }
+  }
+
+  async function loadApproved() {
+    try {
+      const res = await fetch(`${API}?action=getAllApproved&key=${KEY}`);
+      const data = await res.json();
+      const list = document.getElementById('approved-list');
+      document.getElementById('approved-count').textContent = data.length;
+
+      if (data.length === 0) {
+        list.innerHTML = '<div class="empty">No approved questions yet</div>';
+        return;
+      }
+
+      list.innerHTML = data.map(q => `
+        <div class="q-card ${q.pinned ? 'pinned' : ''} ${q.answered ? 'answered' : ''}" id="acard-${q.rowIndex}">
+          <div class="q-meta">
+            <span class="q-tag ${q.publishedAs === 'anon' ? 'tag-anon' : 'tag-open'}">
+              ${q.publishedAs === 'anon' ? '👤 Anonymous' : '✦ ' + escHtml(q.submittedName || '')}
+            </span>
+            ${q.pinned ? '<span class="q-tag tag-pin">📌 Pinned</span>' : ''}
+            ${q.answered ? '<span class="q-tag tag-answered">✓ Answered</span>' : ''}
+            <span style="font-size:11px;color:var(--muted);margin-left:auto">👍 ${q.likes}</span>
+          </div>
+          <div class="q-text">${escHtml(q.text)}</div>
+          <div class="publish-row">
+            Publish as:
+            <div class="toggle-group">
+              <button class="toggle-btn ${q.publishedAs === 'anon' ? 'active' : ''}"
+                id="pub-anon-${q.rowIndex}"
+                onclick="setPublishAs(${q.rowIndex}, 'anon', 'approved')">Anonymous</button>
+              <button class="toggle-btn ${q.publishedAs !== 'anon' ? 'active' : ''}"
+                id="pub-open-${q.rowIndex}"
+                onclick="setPublishAs(${q.rowIndex}, 'open', 'approved')">With name</button>
+            </div>
+          </div>
+          <div class="q-actions">
+            <button class="btn ${q.pinned ? 'btn-unanswered' : 'btn-pin'}"
+              onclick="togglePin(${q.rowIndex}, ${q.pinned})">
+              ${q.pinned ? '📌 Unpin' : '📌 Pin'}
+            </button>
+            <button class="btn ${q.answered ? 'btn-unanswered' : 'btn-answered'}"
+              onclick="toggleAnswered(${q.rowIndex}, ${q.answered})">
+              ${q.answered ? '↩ Unanswer' : '✓ Answered'}
+            </button>
+            <button class="btn btn-delete" onclick="moderate(${q.rowIndex}, 'Deleted', 'acard-${q.rowIndex}')">🗑</button>
+          </div>
+        </div>
+      `).join('');
+    } catch(e) {
+      document.getElementById('approved-list').innerHTML = '<div class="empty">Failed to load</div>';
+    }
+  }
+
+  // Publish as toggle (sets publishedAs without changing status)
+  function setPublishAs(rowIndex, publishedAs, section) {
+    // Update UI immediately
+    const anonBtn = document.getElementById(`pub-anon-${rowIndex}`);
+    const openBtn = document.getElementById(`pub-open-${rowIndex}`);
+    if (anonBtn) anonBtn.classList.toggle('active', publishedAs === 'anon');
+    if (openBtn) openBtn.classList.toggle('active', publishedAs === 'open');
+
+    new Image().src = `${API}?action=moderateQuestion&key=${KEY}&rowIndex=${rowIndex}&publishedAs=${publishedAs}`;
+    toast('Visibility updated');
+  }
+
+  // Approve / Reject / Delete
+  async function moderate(rowIndex, status, cardId) {
+    const card = document.getElementById(cardId);
+    if (card) card.style.opacity = '0.4';
+
+    new Image().src = `${API}?action=moderateQuestion&key=${KEY}&rowIndex=${rowIndex}&status=${status}`;
+
+    setTimeout(() => {
+      if (card) card.remove();
+      loadAll();
+    }, 800);
+
+    const labels = { Approved: '✓ Approved', Rejected: 'Rejected', Deleted: 'Deleted' };
+    toast(labels[status] || status);
+  }
+
+  // Pin toggle
+  function togglePin(rowIndex, currentlyPinned) {
+    const newVal = !currentlyPinned;
+    new Image().src = `${API}?action=moderateQuestion&key=${KEY}&rowIndex=${rowIndex}&pinned=${newVal}`;
+    toast(newVal ? '📌 Pinned' : 'Unpinned');
+    setTimeout(loadApproved, 800);
+  }
+
+  // Answered toggle
+  function toggleAnswered(rowIndex, currentlyAnswered) {
+    const newVal = !currentlyAnswered;
+    new Image().src = `${API}?action=moderateQuestion&key=${KEY}&rowIndex=${rowIndex}&answered=${newVal}`;
+    toast(newVal ? '✓ Marked as answered' : 'Marked as unanswered');
+    setTimeout(loadApproved, 800);
+  }
+
+  // Also need to handle moderation via GET in Apps Script
+  // Add moderateQuestion to doGet in Apps Script
+
+  function escHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2000);
+  }
+</script>
+
+</body>
+</html>
